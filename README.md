@@ -27,7 +27,7 @@ ofreciendo funcionalidades que se adapten a sus gustos y preferencias. Utiliza l
    - `next`: Reproducir el siguiente archivo en la cola
    - `exit`: Salir del reproductor
   
-Puedes encontrar música de prueba en el directorio `sistema_musica/assets`
+Puedes encontrar música de prueba en el directorio `sistema_musica\assets`
 
 ## Dependencias
 
