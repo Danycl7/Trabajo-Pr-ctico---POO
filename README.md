@@ -43,11 +43,3 @@ Para instalar las dependencias, puede usar pip:
 ```bash
 pip install pygame
 ```
-
-## Ejecución
-
-Para ejecutar el programa, simplemente ejecúte el script `model1.py` en su entorno Python:
-
-```bash
-python model1.py
-```
