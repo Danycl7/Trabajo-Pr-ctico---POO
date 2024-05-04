@@ -1,8 +1,8 @@
 import threading
 
-from sistema_musica.sys_music.model.sys_music import AudioPlayer, console_input, print_menu
+from sistema_musica.sys_music.model.sys_music import AudioPlayer, console_input, start_menu
 
-print_menu()
+start_menu()
 
 player = AudioPlayer()
 
