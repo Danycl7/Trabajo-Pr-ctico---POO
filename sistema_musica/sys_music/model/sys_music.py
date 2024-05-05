@@ -1,4 +1,5 @@
 import pygame
+import random
 
 
 class Usuario:
@@ -71,7 +72,7 @@ class Playlist:
 
     def print_songs(self):
         for song in self.playlist:
-            print(f'-{song.title}')
+            print(f'-{song.title} ({song.genre})')
 
     def __str__(self):
         return f'Playlist: {self.playlist}'
@@ -80,21 +81,89 @@ class Playlist:
 class AudioPlayer:
     def __init__(self):
         pygame.mixer.init()
-        pygame.mixer.music.set_volume(1)
-        self.volume: float = 1
+        pygame.mixer.music.set_volume(0.5)
+        self.volume: float = 0.5
         self.playlists: dict[str, Playlist] = {}
         self.queue: list[str] = []
         self.songs: list[Song] = [
-            Song('Big Sur Moon', 'Artista 1', 'Género 1',
-                 r'C:\Users\Tomas\PycharmProjects\Trabajo-Pr-ctico---POO\sistema_musica\assets\Big Sur Moon.mp3'),
-            Song('Billie Jean', 'Artista 2', 'Género 2',
-                 r'C:\Users\Tomas\PycharmProjects\Trabajo-Pr-ctico---POO\sistema_musica\assets\Billie Jean.mp3'),
-            Song('Elixer', 'Artista 3', 'Género 3',
-                 r'C:\Users\Tomas\PycharmProjects\Trabajo-Pr-ctico---POO\sistema_musica\assets\Elixer.mp3'),
-            Song('Guitar', 'Artista 4', 'Género 4',
-                 r'C:\Users\Tomas\PycharmProjects\Trabajo-Pr-ctico---POO\sistema_musica\assets\Guitar.mp3'),
-            Song('Get Lucky', 'Artista 5', 'Género 5',
-                 r'C:\Users\Tomas\PycharmProjects\Trabajo-Pr-ctico---POO\sistema_musica\assets\Get Lucky.mp3'),
+            Song('bad guy', 'Billie Eilish', 'Pop',
+                 r'C:\Users\Tomas\PycharmProjects\Trabajo-Pr-ctico---POO\sistema_musica\assets\Billie Eilish - bad guy.mp3'),
+            Song('Kiss Me More', 'Doja Cat ft. SZA', 'Pop',
+                 r'C:\Users\Tomas\PycharmProjects\Trabajo-Pr-ctico---POO\sistema_musica\assets\Doja Cat - Kiss Me More.mp3'),
+            Song('Levitating', 'Dua Lipa', 'Pop',
+                 r'C:\Users\Tomas\PycharmProjects\Trabajo-Pr-ctico---POO\sistema_musica\assets\Dua Lipa - Levitating.mp3'),
+            Song('Shape of You', 'Ed Sheeran', 'Pop',
+                 r'C:\Users\Tomas\PycharmProjects\Trabajo-Pr-ctico---POO\sistema_musica\assets\Ed Sheeran - Shape of You.mp3'),
+            Song('As it was', 'Harry Styles', 'Pop',
+                 r'C:\Users\Tomas\PycharmProjects\Trabajo-Pr-ctico---POO\sistema_musica\assets\Harry Styles - As It Was.mp3'),
+            Song('Roar', 'Katy Perry', 'Pop',
+                 r'C:\Users\Tomas\PycharmProjects\Trabajo-Pr-ctico---POO\sistema_musica\assets\Katy Perry - Roar.mp3'),
+            Song('Bad Romance', 'Lady Gaga', 'Pop',
+                 r'C:\Users\Tomas\PycharmProjects\Trabajo-Pr-ctico---POO\sistema_musica\assets\Lady Gaga - Bad Romance.mp3'),
+            Song('Sugar', 'Maroon 5', 'Pop',
+                 r'C:\Users\Tomas\PycharmProjects\Trabajo-Pr-ctico---POO\sistema_musica\assets\Maroon 5 - Sugar.mp3'),
+            Song('Billie Jean', 'Michael Jackson', 'Pop',
+                 r'C:\Users\Tomas\PycharmProjects\Trabajo-Pr-ctico---POO\sistema_musica\assets\Michael Jackson - Billie Jean.mp3'),
+            Song('good 4 u', 'Olivia Rodrigo', 'Pop',
+                 r'C:\Users\Tomas\PycharmProjects\Trabajo-Pr-ctico---POO\sistema_musica\assets\Olivia Rodrigo - good 4 u.mp3'),
+            Song('Sunflower', 'Post Malone ft. Swae Lee', 'Pop',
+                 r'C:\Users\Tomas\PycharmProjects\Trabajo-Pr-ctico---POO\sistema_musica\assets\Post Malone & Swae Lee - Sunflower.mp3'),
+            Song('Bohemian Rhapsody', 'Queen', 'Pop',
+                 r'C:\Users\Tomas\PycharmProjects\Trabajo-Pr-ctico---POO\sistema_musica\assets\Queen - Bohemian Rhapsody.mp3'),
+            Song('Leave the Door Open', 'Silk Sonic', 'Pop',
+                 r'C:\Users\Tomas\PycharmProjects\Trabajo-Pr-ctico---POO\sistema_musica\assets\Silk Sonic - Leave the Door Open.mp3'),
+            Song('Blank Space', 'Taylor Swift', 'Pop',
+                 r'C:\Users\Tomas\PycharmProjects\Trabajo-Pr-ctico---POO\sistema_musica\assets\Taylor Swift - Blank Space.mp3'),
+            Song('Blinding Lights', 'The Weeknd', 'Pop',
+                 r'C:\Users\Tomas\PycharmProjects\Trabajo-Pr-ctico---POO\sistema_musica\assets\The Weeknd - Blinding Lights.mp3'),
+            Song('Back in Black', 'AC/DC', 'Rock',
+                 r'C:\Users\Tomas\PycharmProjects\Trabajo-Pr-ctico---POO\sistema_musica\assets\ACDC - Back in Black.mp3'),
+            Song('Sweet Child O Mine', 'Guns N Roses', 'Rock',
+                 r'C:\Users\Tomas\PycharmProjects\Trabajo-Pr-ctico---POO\sistema_musica\assets\Guns N Roses - Sweet Child o Mine.mp3'),
+            Song('Smells Like Teen Spirit', 'Nirvana', 'Rock',
+                 r'C:\Users\Tomas\PycharmProjects\Trabajo-Pr-ctico---POO\sistema_musica\assets\Nirvana - Smells Like Teen Spirit.mp3'),
+            Song('Radioactive', 'Imagine Dragons', 'Rock',
+                 r'C:\Users\Tomas\PycharmProjects\Trabajo-Pr-ctico---POO\sistema_musica\assets\Imagine Dragons - Radioactive.mp3'),
+            Song('Everlong', 'Foo Fighters', 'Rock',
+                 r'C:\Users\Tomas\PycharmProjects\Trabajo-Pr-ctico---POO\sistema_musica\assets\Foo Fighters - Everlong.mp3'),
+            Song('In the End', 'Linkin Park', 'Rock',
+                 r'C:\Users\Tomas\PycharmProjects\Trabajo-Pr-ctico---POO\sistema_musica\assets\Linkin Park - In the End.mp3'),
+            Song('Stairway to Heaven', 'Led Zeppelin', 'Rock',
+                 r'C:\Users\Tomas\PycharmProjects\Trabajo-Pr-ctico---POO\sistema_musica\assets\Led Zeppelin - Stairway to Heaven.mp3'),
+            Song('Enter Sandman', 'Metallica', 'Rock',
+                 r'C:\Users\Tomas\PycharmProjects\Trabajo-Pr-ctico---POO\sistema_musica\assets\Metallica - Enter Sandman.mp3'),
+            Song('Hey Jude', 'The Beatles', 'Rock',
+                 r'C:\Users\Tomas\PycharmProjects\Trabajo-Pr-ctico---POO\sistema_musica\assets\The Beatles - Hey Jude.mp3'),
+            Song('Wish You Were Here', 'Pink Floyd', 'Rock',
+                 r'C:\Users\Tomas\PycharmProjects\Trabajo-Pr-ctico---POO\sistema_musica\assets\Pink Floyd - Wish You Were Here.mp3'),
+            Song('One more time', 'Daft Punk', 'Electronica',
+                 r'C:\Users\Tomas\PycharmProjects\Trabajo-Pr-ctico---POO\sistema_musica\assets\Daft Punk - One More Time.mp3'),
+            Song('Feel so close', 'Calvin Harris', 'Electronica',
+                 r'C:\Users\Tomas\PycharmProjects\Trabajo-Pr-ctico---POO\sistema_musica\assets\Calvin Harris - Feel So Close.mp3'),
+            Song('Wake me up', 'Avicii', 'Electronica',
+                 r'C:\Users\Tomas\PycharmProjects\Trabajo-Pr-ctico---POO\sistema_musica\assets\Avicii - Wake Me Up.mp3'),
+            Song('Dont you worry child', 'Swedish House Mafia', 'Electronica',
+                 r'C:\Users\Tomas\PycharmProjects\Trabajo-Pr-ctico---POO\sistema_musica\assets\Swedish House Mafia - Dont You Worry Child.mp3'),
+            Song('Animals', 'Martin Garrix', 'Electronica',
+                 r'C:\Users\Tomas\PycharmProjects\Trabajo-Pr-ctico---POO\sistema_musica\assets\Martin Garrix - Animals.mp3'),
+            Song('Ghost n Stuff', 'Deadmau5', 'Electronica',
+                 r'C:\Users\Tomas\PycharmProjects\Trabajo-Pr-ctico---POO\sistema_musica\assets\Deadmau5 - Ghosts n Stuff.mp3'),
+            Song('D.A.N.C.E.', 'Justice', 'Electronica',
+                 r'C:\Users\Tomas\PycharmProjects\Trabajo-Pr-ctico---POO\sistema_musica\assets\Justice - D.A.N.C.E..mp3'),
+            Song('Galvanize', 'The Chemical Brothers', 'Electronica',
+                 r'C:\Users\Tomas\PycharmProjects\Trabajo-Pr-ctico---POO\sistema_musica\assets\The Chemical Brothers - Galvanize.mp3'),
+            Song('HUMBLE.', 'Kendrick Lamar', 'Hip Hop',
+                 r'C:\Users\Tomas\PycharmProjects\Trabajo-Pr-ctico---POO\sistema_musica\assets\Kendrick Lamar - HUMBLE..mp3'),
+            Song('Gods Plan', 'Drake', 'Hip Hop',
+                 r'C:\Users\Tomas\PycharmProjects\Trabajo-Pr-ctico---POO\sistema_musica\assets\Drake - Gods Plan.mp3'),
+            Song('Stronger', 'Kanye West', 'Hip Hop',
+                 r'C:\Users\Tomas\PycharmProjects\Trabajo-Pr-ctico---POO\sistema_musica\assets\Kanye West - Stronger.mp3'),
+            Song('Lose Yourself', 'Eminem', 'Hip Hop',
+                 r'C:\Users\Tomas\PycharmProjects\Trabajo-Pr-ctico---POO\sistema_musica\assets\Eminem - Lose Yourself.mp3'),
+            Song('Empire State of Mind', 'Jay Z ft. Alicia', 'Hip Hop',
+                 r'C:\Users\Tomas\PycharmProjects\Trabajo-Pr-ctico---POO\sistema_musica\assets\Jay-Z - Empire State of Mind.mp3'),
+            Song('Changes', '2Pac', 'Hip Hop',
+                 r'C:\Users\Tomas\PycharmProjects\Trabajo-Pr-ctico---POO\sistema_musica\assets\Tupac Shakur - Changes.mp3'),
         ]
 
     def set_volume(self, volume: float):
@@ -127,6 +196,57 @@ class AudioPlayer:
         for playlist_name, playlist in self.playlists.items():
             print(f'Playlist: {playlist_name}')
             playlist.print_songs()
+            print("\n")
+
+    def recommend_playlist(self, reference_playlist_name: str):
+        if reference_playlist_name not in self.playlists:
+            print("Playlist de referencia no encontrada")
+            return
+
+        reference_playlist = self.playlists[reference_playlist_name]
+        if len(reference_playlist.playlist) < 5:
+            print("La playlist de referencia no tiene suficientes canciones")
+            return
+
+        reference_songs = random.sample(reference_playlist.playlist, 5)
+        reference_genres = {song.genre for song in reference_songs}
+
+        recommended_songs = [song for song in self.songs if
+                             song.genre in reference_genres and song.title not in {song.title for song in
+                                                                                   reference_songs}]
+
+        if len(recommended_songs) < 5:
+            print("No hay suficientes canciones para generar una playlist recomendada")
+            return
+
+        playlist_name = "Recommended Playlist"
+        i = 1
+        while playlist_name in self.playlists:
+            playlist_name = f"Recommended Playlist {i}"
+            i += 1
+
+        selected_songs = random.sample(recommended_songs, 5)
+
+        recommended_playlist = Playlist(playlist_name, selected_songs)
+        self.playlists[recommended_playlist.playlistname] = recommended_playlist
+
+        print(f"Playlist recomendada '{recommended_playlist.playlistname}' creada con éxito, Generos: {reference_genres}")
+
+    def random_playlist(self):
+        if len(self.songs) < 5:
+            print("No hay suficientes canciones para generar una playlist aleatoria")
+            return
+
+        playlist_name = "Random Playlist"
+        i = 1
+        while playlist_name in self.playlists:
+            playlist_name = f"Random Playlist {i}"
+            i += 1
+
+        random_playlist = Playlist(playlist_name, random.sample(self.songs, 5))
+        self.playlists[random_playlist.playlistname] = random_playlist
+
+        print(f"Playlist aleatoria '{random_playlist.playlistname}' creada con éxito")
 
 
 def start_menu():
@@ -158,6 +278,13 @@ def print_menu():
     print("queue <nombre de la canción> - Agregar una canción a la cola")
     print("next - Reproducir la siguiente canción en la cola")
     print("volume <número> - Cambiar el volumen")
+    print("new playlist - Crear una nueva playlist")
+    print("show playlists - Ver lista de playlists")
+    print("add to playlist - Agregar una canción a una playlist")
+    print("remove from playlist - Remover una canción de una playlist")
+    print("start playlist - Reproducir una playlist")
+    print("random playlist - Crear una playlist aleatoria")
+    print("recommend playlist - Crear una playlist recomendada")
     print("exit - Salir del reproductor de audio\n")
     return user
 
@@ -257,6 +384,11 @@ def console_input(audio_player: AudioPlayer):
                         audio_player.add_queue(song.file_path)
             else:
                 print("Playlist no encontrada")
+        elif command == 'random playlist':
+            audio_player.random_playlist()
+        elif command == 'recommend playlist':
+            playlistname = input("Ingrese el nombre de la playlist de referencia: ")
+            audio_player.recommend_playlist(playlistname)
         elif command == 'exit':
             exit()
         else:
