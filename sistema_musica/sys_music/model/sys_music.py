@@ -12,20 +12,42 @@ class Usuario:
         self.country = country
 
     def create_user(self):
-        self.name = input('Ingrese su nombre: ')
-        self.email = input('Ingrese su correo: ')
-        self.occupation = input('Ingrese su ocupación: ')
-        self.country = input('Ingrese su país de orígen: ')
+        while True:
+            self.name = input('Ingrese su nombre: ')
+            if self.name.isalpha():
+                break
+            else:
+                print('El nombre no puede contener números')
 
         while True:
-            try:
-                self.age = int(input('Ingrese su edad: '))
-                if self.age < 0:
-                    print('La edad no puede ser un número negativo')
-                else:
-                    break
-            except ValueError:
-                print('La edad debe ser un número entero válido')
+            self.email = input('Ingrese su correo: ')
+            if '@' in self.email and '.' in self.email:
+                break
+            else:
+                print('El correo debe contener un "@" y un "."')
+
+        while True:
+            self.occupation = input('Ingrese su ocupación: ')
+            if self.occupation.isalpha():
+                break
+            else:
+                print('La ocupación no puede contener números')
+
+        while True:
+            self.country = input('Ingrese su país de orígen: ')
+            if self.country.isalpha():
+                break
+            else:
+                print('El país no puede contener números')
+
+        while True:
+            self.age = int(input('Ingrese su edad: '))
+            if self.age > 0:
+                break
+            elif self.age > 100:
+                print('Edad no válida')
+            else:
+                print('La edad no puede ser negativa')
         return self
 
     def __str__(self):
@@ -53,12 +75,16 @@ class Song:
 
 
 class Playlist:
-    def __init__(self, playlistname: str, playlist: list[Song]):
-        self.playlistname = playlistname
+    def __init__(self, playlist_name: str, playlist: list[Song]):
+        self.playlist_name = playlist_name
         self.playlist = playlist
 
     def create_playlist(self):
-        self.playlistname = input('Ingrese el nombre de la playlist: ')
+        self.playlist_name = input('Ingrese el nombre de la playlist: ')
+        return self
+
+    def delete_playlist(self):
+        self.playlist_name = input('Ingrese el nombre de la playlist a eliminar: ')
         return self
 
     def add_song(self, song: Song):
@@ -184,13 +210,30 @@ class AudioPlayer:
 
     def new_playlist(self):
         playlist = Playlist('', [])
-        self.playlists[playlist.playlistname] = playlist.create_playlist()
+        self.playlists[playlist.playlist_name] = playlist.create_playlist()
 
-    def add_to_playlist(self, playlistname: str, song: Song):
-        self.playlists[playlistname].add_song(song)
+    def delete_playlist(self):
+        playlist_name = input('Ingrese el nombre de la playlist a eliminar: ')
+        if playlist_name in self.playlists:
+            del self.playlists[playlist_name]
+            print('Playlist eliminada con éxito')
+        else:
+            print('Playlist no encontrada')
 
-    def remove_from_playlist(self, playlistname: str, song: Song):
-        self.playlists[playlistname].remove_song(song)
+    def rename_playlist(self):
+        playlist_name = input('Ingrese el nombre de la playlist a renombrar: ')
+        if playlist_name in self.playlists:
+            new_name = input('Ingrese el nuevo nombre de la playlist: ')
+            self.playlists[new_name] = self.playlists.pop(playlist_name)
+            print('Playlist renombrada con éxito')
+        else:
+            print('Playlist no encontrada')
+
+    def add_to_playlist(self, playlist_name: str, song: Song):
+        self.playlists[playlist_name].add_song(song)
+
+    def remove_from_playlist(self, playlist_name: str, song: Song):
+        self.playlists[playlist_name].remove_song(song)
 
     def print_playlists(self):
         for playlist_name, playlist in self.playlists.items():
@@ -228,9 +271,9 @@ class AudioPlayer:
         selected_songs = random.sample(recommended_songs, 5)
 
         recommended_playlist = Playlist(playlist_name, selected_songs)
-        self.playlists[recommended_playlist.playlistname] = recommended_playlist
+        self.playlists[recommended_playlist.playlist_name] = recommended_playlist
 
-        print(f"Playlist recomendada '{recommended_playlist.playlistname}' creada con éxito, Generos: {reference_genres}")
+        print(f"Playlist recomendada '{recommended_playlist.playlist_name}' creada con éxito, Generos: {reference_genres}")
 
     def random_playlist(self):
         if len(self.songs) < 5:
@@ -244,9 +287,15 @@ class AudioPlayer:
             i += 1
 
         random_playlist = Playlist(playlist_name, random.sample(self.songs, 5))
-        self.playlists[random_playlist.playlistname] = random_playlist
+        self.playlists[random_playlist.playlist_name] = random_playlist
 
-        print(f"Playlist aleatoria '{random_playlist.playlistname}' creada con éxito")
+        print(f"Playlist aleatoria '{random_playlist.playlist_name}' creada con éxito")
+
+    def random_song(self):
+        random_song = random.choice(self.songs)
+        print(f"Reproduciendo {random_song.title}")
+        pygame.mixer.music.load(random_song.file_path)
+        pygame.mixer.music.play()
 
 
 def start_menu():
@@ -279,11 +328,14 @@ def print_menu():
     print("next - Reproducir la siguiente canción en la cola")
     print("volume <número> - Cambiar el volumen")
     print("new playlist - Crear una nueva playlist")
+    print("delete playlist - Eliminar una playlist")
+    print("rename playlist - Renombrar una playlist")
     print("show playlists - Ver lista de playlists")
     print("add to playlist - Agregar una canción a una playlist")
     print("remove from playlist - Remover una canción de una playlist")
     print("start playlist - Reproducir una playlist")
     print("random playlist - Crear una playlist aleatoria")
+    print("random song - Reproducir una canción aleatoria")
     print("recommend playlist - Crear una playlist recomendada")
     print("exit - Salir del reproductor de audio\n")
     return user
@@ -389,6 +441,12 @@ def console_input(audio_player: AudioPlayer):
         elif command == 'recommend playlist':
             playlistname = input("Ingrese el nombre de la playlist de referencia: ")
             audio_player.recommend_playlist(playlistname)
+        elif command == 'delete playlist':
+            audio_player.delete_playlist()
+        elif command == 'random song':
+            audio_player.random_song()
+        elif command == 'rename playlist':
+            audio_player.rename_playlist()
         elif command == 'exit':
             exit()
         else:
